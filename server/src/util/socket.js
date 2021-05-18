@@ -1,4 +1,3 @@
-import EventEmitter from 'events'
 import http from 'http'
 import { Server } from 'socket.io'
 import { constants } from './constants.js'
@@ -25,7 +24,7 @@ export default class SocketServer {
                 const route = this.namespaces[namespace] = this.#io.of(`/${namespace}`)
                 route.on('connection', socket => {
                     for(const [functionName, functionValue] of events) {
-                        socket.on[functionName, (...args) => functionValue(socket, ...args)]
+                        socket.on(functionName, (...args) => functionValue(socket, ...args))
                     }
 
                     eventEmitter.emit(constants.event.USER_CONNECTED, socket)
@@ -38,7 +37,7 @@ export default class SocketServer {
         const server = http.createServer((request, response) => {
             response.writeHead(200, {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methdos': 'OPTIONS,POST,GET'
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             })
 
             response.end('Hello there!')

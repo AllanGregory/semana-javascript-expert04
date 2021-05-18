@@ -6,7 +6,7 @@ export default class Room {
         this.topic = topic
         this.attendeesCount = attendeesCount
         this.speakersCount = speakersCount
-        this.featuredAttendees = featuredAttendees?.map(attendee => Attendee(attendee))
+        this.featuredAttendees = featuredAttendees?.map(attendee => new Attendee(attendee))
         this.owner = new Attendee(owner)
         this.users = users
     }

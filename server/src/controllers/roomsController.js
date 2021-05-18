@@ -28,11 +28,11 @@ export default class RoomsController {
 
         const updatedRoom = this.#joinUserRoom(socket, updatedUserData, room)
         console.log({ updatedRoom })
-        this.#notifyUsersOnRoom(socker, roomId, updatedUserData)
-        this.replyWithActiveUsers(socket, updatedRoom.users)
+        this.#notifyUsersOnRoom(socket, roomId, updatedUserData)
+        this.#replyWithActiveUsers(socket, updatedRoom.users)
     }
 
-    #replyWithActiveUsers(socker, users) {
+    #replyWithActiveUsers(socket, users) {
         const event = constants.event.LOBBY_UPDATED
         socket.emit(event, [...users.values()])
     }
@@ -60,7 +60,7 @@ export default class RoomsController {
             ...currentRoom,
             ...room,
             owner,
-            users: new Set([...users, [currentUser]])
+            users: new Set([...users, ...[currentUser]])
         })
 
         this.rooms.set(roomId, updatedRoom)
@@ -103,8 +103,8 @@ export default class RoomsController {
 
     getEvents() {
         const functions = Reflect.ownKeys(RoomsController.prototype)
-        .filter(fn => fn !== 'constructor')
-        .map(name => [name, this[name].bind(this)])
+            .filter(fn => fn !== 'constructor')
+            .map(name => [name, this[name].bind(this)])
 
         return new Map(functions)
 
